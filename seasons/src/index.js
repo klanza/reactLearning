@@ -2,25 +2,28 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  // THIS CODE ALLOWS US TO SKIP CONSTRUCTOR AND SUPER
+  state = {
+    lat: null,
+    errorMessage: ''
+  };
 
-    this.state = {
-      lat: null
-    };
-
+  componentDidMount() {
     window.navigator.geolocation.getCurrentPosition(
-      position => {
-        // we called setState here to change state
-        // UNLESS initializing state, NEVER directly assign state
-        this.setState({ lat: position.coords.latitude });
-      },
-      err => console.log(err)
+      position => this.setState({ lat: position.coords.latitude }),
+      err => this.setState({ errorMessage: err.message })
     );
   }
 
   render() {
-    return <div>Latitude:{this.state.lat}</div>;
+    if (this.state.errorMessage && !this.state.lat) {
+      return <div>Error: {this.state.errorMessage}</div>;
+    }
+    if (!this.state.errorMessage && this.state.lat) {
+      return <div>Latitude: {this.state.lat}</div>;
+    }
+
+    return <div>Loading...</div>;
   }
 }
 
