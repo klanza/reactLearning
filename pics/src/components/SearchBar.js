@@ -8,7 +8,8 @@ class SearchBar extends Component {
   // IN CONSTRUCT, CORRECT WITH: this.onFormSubmit = this.onFormSubmit.bind(this)
   onFormSubmit = event => {
     event.preventDefault();
-    console.log(this.state.term);
+    // When making use of props in a CLASS based component, use **this.props**
+    this.props.onSubmit(this.state.term);
   };
 
   render() {
@@ -19,6 +20,7 @@ class SearchBar extends Component {
           to invoke function when form is submitted 
           {event => this.onFormSubmit(event) */}
         <form onSubmit={this.onFormSubmit} className="ui form">
+          {/* MUST call this onSubmit*/}
           <div className="field">
             <label>Image Search</label>
             <input
