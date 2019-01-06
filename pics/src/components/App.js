@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import unsplash from '../api/unsplash';
 
 import SearchBar from './SearchBar';
-
+import ImageList from './ImageList';
 class App extends Component {
-  async onSearchSubmit(term) {
-    const response = await axios.get('https://api.unsplash.com/search/photos', {
+  state = { images: [] };
+
+  // HOW TO USE ASYNC WITH ARROW FUNCTION BELOW, NEEDED TO FIX THIS BINDING
+  onSearchSubmit = async term => {
+    const response = await unsplash.get('/search/photos', {
       params: {
         query: term
-      },
-      headers: {
-        Authorization:
-          'Client-ID ff2c8e8f413fbabf9d4380cfc623eca8690aef40d1dddbd3278ac4626ba19a0a'
       }
     });
-    console.log(response.data.results);
-  }
+    this.setState({ images: response.data.results });
+  };
 
   render() {
     return (
@@ -23,6 +22,7 @@ class App extends Component {
         {/* When passing properties or callbacks on props WE author, can name these
             properties whatever we desire, i.e. onSubmit could be runWhenUserSubmits*/}
         <SearchBar onSubmit={this.onSearchSubmit} />
+        <ImageList images={this.state.images} />
       </div>
     );
   }
