@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 class SearchBar extends Component {
-  state = { term: 'v' };
+  state = { term: '' };
 
   onInputChange = event => {
     this.setState({ term: event.target.value });
@@ -10,21 +10,21 @@ class SearchBar extends Component {
   onFormSubmit = event => {
     event.preventDefault();
 
-    // TODO: MAKE SURE WE CALL CALLBACK FROM PARENT COMPONENT
+    this.props.onTermSubmit(this.state.term);
   };
 
   render() {
     return (
       <div className="ui segment search-bar">
         <form onSubmit={this.onFormSubmit} className="ui form">
-          <field className="field">
+          <div className="field">
             <label>Video Search</label>
             <input
               onChange={this.onInputChange}
               value={this.state.term}
               type="text"
             />
-          </field>
+          </div>
         </form>
       </div>
     );
