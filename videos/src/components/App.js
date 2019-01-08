@@ -15,6 +15,7 @@ class App extends Component {
       }
     });
     this.setState({ videos: response.data.items });
+    console.log(response.data);
   };
 
   onVideoSelect = video => {
