@@ -5,12 +5,21 @@ import jsonPlaceholder from '../apis/jsonPlaceholder';
 export const fetchPostsAndUsers = () => async (dispatch, getState) => {
   console.log('about to fetch posts!');
   await dispatch(fetchPosts());
-  const userIds = _.uniq(_.map(getState().posts, 'userId'));
-  userIds.forEach(id => dispatch(fetchUser(id)));
+  // ORIGINAL SOLUTION
+  //   const userIds = _.uniq(_.map(getState().posts, 'userId'));
+  //   userIds.forEach(id => dispatch(fetchUser(id)));
 
-  //   CAN'T USE AWAIT WITH FOREACH, ALT METHOD BELOW
-  //   await Promise.all(userIds.map(id => dispatch(fetchUser(id))))
+  // optional lodash refactor below
+  // Chain allows to chain methods together, each following chain taking the object
+  // returned and pass it as the first argument to the chained method
+  _.chain(getState().posts)
+    .map('userId')
+    .uniq()
+    .forEach(id => dispatch(fetchUser(id)))
+    .value();
 };
+//   CAN'T USE AWAIT WITH FOREACH, ALT METHOD BELOW
+//   await Promise.all(userIds.map(id => dispatch(fetchUser(id))))
 
 export const fetchPosts = () => async dispatch => {
   const response = await jsonPlaceholder.get('/posts');
