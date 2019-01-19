@@ -25,9 +25,7 @@ class StreamCreate extends Component {
     // Uses ES6 syntax, pulls all of the properties and applies them as props to component
   };
 
-  onSubmit(formValues) {
-    console.log(formValues);
-  }
+  onSubmit(formValues) {}
 
   render() {
     return (
